@@ -1,0 +1,938 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birdverse — Join the Aviation Terminal</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      /* Typography */
+      --font-primary: 'Montserrat', sans-serif;
+      --font-secondary: 'Outfit', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-technical: 'JetBrains Mono', monospace;
+
+      /* Color Tokens (Cockpit Standard) */
+      --dark-bg: #081431;            /* Aether Blue */
+      --card-bg: #101e3e;            /* Deep Cockpit Surface */
+      --card-bg-hover: #17284f;      /* Sleek Hover Blue */
+      
+      --brand-orange: #ffa028;       /* Terminal Orange */
+      --brand-arctic-ice: #e0f2fe;   /* Arctic Ice */
+      --brand-deep-slate: #0f172a;   /* Deep Slate */
+      
+      --gray-velocity: #c1cbd4;      /* Velocity Gray */
+      --white-horizon: #f7f9fb;      /* Horizon White */
+
+      /* Avionics Status Alerts */
+      --success: hsl(145, 80%, 45%);   /* Avionics Green */
+      --caution: hsl(40, 100%, 50%);   /* Aviation Amber */
+      --alert: hsl(350, 100%, 45%);     /* Master Warning Red */
+
+      --border-color: rgba(224, 242, 254, 0.08);
+      --border-glow: rgba(255, 160, 40, 0.25);
+      
+      --transition-normal: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      --transition-fast: all 0.15s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      max-width: 100vw;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--white-horizon);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Background Gradients */
+    body::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      left: -15%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(255, 160, 40, 0.04) 0%, rgba(8, 20, 49, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    body::after {
+      content: '';
+      position: absolute;
+      bottom: -10%;
+      right: -10%;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(224, 242, 254, 0.03) 0%, rgba(8, 20, 49, 0) 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Fixed Navigation Bar */
+    nav {
+      width: 100%;
+      height: 75px;
+      background: rgba(8, 20, 49, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 4rem;
+      z-index: 1000;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-logo-svg {
+      width: 26px;
+      height: 26px;
+      fill: var(--brand-arctic-ice);
+      filter: drop-shadow(0 0 4px rgba(224, 242, 254, 0.2));
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-primary);
+      font-weight: 700;
+      font-size: 1.45rem;
+      color: var(--brand-orange);
+      letter-spacing: -0.02em;
+    }
+
+    .nav-back-link {
+      color: var(--brand-orange);
+      background: rgba(255, 160, 40, 0.08);
+      border: 1px solid rgba(255, 160, 40, 0.25);
+      border-radius: 20px;
+      padding: 0.5rem 1.1rem;
+      text-decoration: none;
+      font-family: var(--font-secondary);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: var(--transition-normal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-back-link:hover {
+      background: var(--brand-orange);
+      color: var(--brand-deep-slate);
+      box-shadow: 0 0 12px var(--border-glow);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 3rem 2rem;
+    }
+
+    .form-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 620px;
+      padding: 3rem;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+      position: relative;
+    }
+
+    .form-header {
+      margin-bottom: 2.25rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1.5rem;
+    }
+
+    .form-free-badge {
+      font-family: var(--font-technical);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.08);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      padding: 6px 14px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 1.25rem;
+      font-weight: 700;
+      text-shadow: 0 0 6px rgba(16, 185, 129, 0.1);
+      text-wrap: balance;
+      max-width: 100%;
+    }
+
+    .form-title {
+      font-family: var(--font-primary);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--white-horizon);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-desc {
+      font-family: var(--font-secondary);
+      font-size: 0.95rem;
+      color: var(--gray-velocity);
+      line-height: 1.5;
+      text-wrap: balance;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-family: var(--font-secondary);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--white-horizon);
+    }
+
+    .form-input, .form-select {
+      background: #040a1b;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--white-horizon);
+      padding: 0.8rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition-fast);
+      width: 100%;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 10px rgba(255, 160, 40, 0.15);
+    }
+
+    .form-select option {
+      background: var(--card-bg);
+      color: var(--white-horizon);
+    }
+
+    /* Multiselect Dropdown Styling */
+    .multiselect-dropdown {
+      position: relative;
+      width: 100%;
+      user-select: none;
+    }
+
+    .multiselect-select {
+      background: #040a1b;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--white-horizon);
+      padding: 0.8rem 1rem;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: var(--transition-fast);
+      width: 100%;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .multiselect-select:hover, .multiselect-select.active {
+      border-color: var(--brand-orange);
+      box-shadow: 0 0 10px rgba(255, 160, 40, 0.15);
+    }
+
+    .multiselect-select span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 1rem;
+      opacity: 0.5;
+    }
+
+    .multiselect-select span.has-value {
+      opacity: 1;
+    }
+
+    .dropdown-arrow {
+      transition: transform var(--transition-fast);
+      flex-shrink: 0;
+    }
+
+    .multiselect-select.active .dropdown-arrow {
+      transform: rotate(180deg);
+    }
+
+    .multiselect-options {
+      display: none;
+      position: relative;
+      width: 100%;
+      background: #040a1b;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-top: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 0.5rem 0;
+      box-sizing: border-box;
+    }
+
+    .multiselect-options.active {
+      display: block;
+    }
+
+    .multiselect-option {
+      display: flex;
+      align-items: center;
+      padding: 0.65rem 1.25rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      gap: 12px;
+    }
+
+    .multiselect-option:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .multiselect-option input[type="checkbox"] {
+      cursor: pointer;
+      accent-color: var(--brand-orange);
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border-color);
+      background: #040a1b;
+      border-radius: 4px;
+      margin: 0;
+    }
+
+    .multiselect-option label {
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--white-horizon);
+      font-family: var(--font-body);
+      flex: 1;
+      margin: 0;
+    }
+
+    /* Dynamic Alert box */
+    .alert-box {
+      background: rgba(255, 160, 40, 0.04);
+      border: 1px solid rgba(255, 160, 40, 0.2);
+      border-left: 4px solid var(--brand-orange);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.25rem;
+      font-size: 0.85rem;
+      color: var(--gray-velocity);
+      margin: 1.5rem 0;
+      display: none; /* Controlled via JS */
+      line-height: 1.5;
+    }
+
+    .alert-box strong {
+      color: var(--white-horizon);
+    }
+
+    .btn-submit {
+      background: var(--brand-orange);
+      color: var(--brand-deep-slate);
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-family: var(--font-secondary);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 160, 40, 0.3);
+      transition: var(--transition-normal);
+      width: 100%;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 1rem;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 22px rgba(255, 160, 40, 0.45);
+    }
+
+    .btn-secondary {
+      background: rgba(224, 242, 254, 0.03);
+      border: 1px solid var(--border-color);
+      color: var(--white-horizon) !important;
+      padding: 0.95rem 2.5rem;
+      border-radius: 8px;
+      font-family: var(--font-secondary);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition-normal);
+      text-decoration: none;
+      display: block;
+      text-align: center;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(224, 242, 254, 0.08);
+      border-color: var(--gray-velocity);
+      color: var(--brand-orange) !important;
+      transform: translateY(-2px);
+    }
+
+    /* Success Card States */
+    .success-container {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      fill: var(--success);
+      margin: 0 auto 1.5rem;
+      filter: drop-shadow(0 0 10px rgba(16, 185, 129, 0.3));
+    }
+
+    .success-subtitle {
+      font-family: var(--font-technical);
+      font-size: 0.75rem;
+      color: var(--brand-orange);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .success-desc {
+      font-size: 0.95rem;
+      color: var(--gray-velocity);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .console-box {
+      background: #040a1b;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1.25rem;
+      text-align: left;
+      font-family: var(--font-technical);
+      font-size: 0.75rem;
+      color: var(--gray-velocity);
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .console-line {
+      margin-bottom: 6px;
+    }
+
+    .console-label {
+      color: var(--brand-orange);
+      font-weight: 700;
+    }
+
+    .console-green {
+      color: var(--success);
+    }
+
+    /* Technical Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background-color: rgba(8, 20, 49, 0.8);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--gray-velocity);
+    }
+
+    .footer-log {
+      font-family: var(--font-technical);
+      color: var(--brand-orange);
+    }
+
+    @media (max-width: 968px) {
+      nav {
+        padding: 0 2.5rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .form-card {
+        padding: 2rem;
+      }
+      nav {
+        padding: 0 2rem;
+      }
+      footer {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        padding: 0 1.25rem;
+      }
+      .form-card {
+        padding: 1.5rem 1.25rem;
+      }
+      .form-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <svg class="nav-logo-svg" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M215.091 262.074C225.098 242.154 233.069 222.999 238 205C128 150 36 108 18 92C100 72 240 82 318 125C362 95 396 63 410 50C400 78 348 125 310 178C387.357 273.608 453.711 349.930 463.471 371.947C421.845 360.891 320.138 335.704 215.091 262.074Z"/>
+      </svg>
+      <span class="nav-logo-text">Birdverse</span>
+    </a>
+    
+    <a href="index.html" class="nav-back-link">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      <span>Back</span>
+    </a>
+  </nav>
+
+  <!-- Main Section -->
+  <main>
+    <div class="form-card">
+      
+      <!-- Normal Form Content -->
+      <div id="join-form-container">
+        <div class="form-header">
+          <div class="form-free-badge">✓ World Class Data. Escrowed transactions. Enterprise Grade.</div>
+          <h1 class="form-title">Join Birdverse</h1>
+          <p class="form-desc">To protect the integrity of Birdverse, onboarding will require verifying aircraft ownership or credentials proving you're a bonafide aviation industry member.</p>
+        </div>
+
+        <form id="join-form" onsubmit="handleJoinSubmit(event)">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="first-name">First Name</label>
+              <input class="form-input" type="text" id="first-name" required placeholder="e.g. Ross" />
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="last-name">Last Name</label>
+              <input class="form-input" type="text" id="last-name" required placeholder="e.g. Martinez" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="email">Professional Email</label>
+            <input class="form-input" type="email" id="email" required placeholder="e.g. rmartinez@apexflight.com" oninput="checkEmailDomain(this.value)" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="org-name">Company / Organization</label>
+            <input class="form-input" type="text" id="org-name" required placeholder="e.g. Apex Flight Operations" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="multiselect-trigger">Role / Classification</label>
+            <div class="multiselect-dropdown" id="multiselect-dropdown">
+              <div class="multiselect-select" id="multiselect-trigger" onclick="toggleDropdown(event)">
+                <span id="multiselect-label">Select your aviation role(s)</span>
+                <svg class="dropdown-arrow" viewBox="0 0 24 24" width="18" height="18">
+                  <path d="M7 10l5 5 5-5H7z" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="multiselect-options" id="multiselect-options">
+                <div class="multiselect-option" onclick="toggleOption('role-mechanic')">
+                  <input type="checkbox" id="role-mechanic" value="mechanic" data-label="A&P Mechanic / IA Airman" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-mechanic" onclick="event.stopPropagation();">A&P Mechanic / IA Airman</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-owner_part135')">
+                  <input type="checkbox" id="role-owner_part135" value="owner_part135" data-label="Aircraft Owner - Part 135" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-owner_part135" onclick="event.stopPropagation();">Aircraft Owner - Part 135</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-owner_part91')">
+                  <input type="checkbox" id="role-owner_part91" value="owner_part91" data-label="Aircraft Owner - Part 91" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-owner_part91" onclick="event.stopPropagation();">Aircraft Owner - Part 91</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-attorney')">
+                  <input type="checkbox" id="role-attorney" value="attorney" data-label="Attorney / Escrow Agent" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-attorney" onclick="event.stopPropagation();">Attorney / Escrow Agent</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-avionics')">
+                  <input type="checkbox" id="role-avionics" value="avionics" data-label="Avionics Shop / Technician" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-avionics" onclick="event.stopPropagation();">Avionics Shop / Technician</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-broker')">
+                  <input type="checkbox" id="role-broker" value="broker" data-label="Broker / Dealer" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-broker" onclick="event.stopPropagation();">Broker / Dealer</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-corporate')">
+                  <input type="checkbox" id="role-corporate" value="corporate" data-label="Corporate Flight Department" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-corporate" onclick="event.stopPropagation();">Corporate Flight Department</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-dispatcher')">
+                  <input type="checkbox" id="role-dispatcher" value="dispatcher" data-label="Dispatcher / Fleet Manager" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-dispatcher" onclick="event.stopPropagation();">Dispatcher / Fleet Manager</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-fbo')">
+                  <input type="checkbox" id="role-fbo" value="fbo" data-label="FBO" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-fbo" onclick="event.stopPropagation();">FBO</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-financial')">
+                  <input type="checkbox" id="role-financial" value="financial" data-label="Financial Services / Insurance" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-financial" onclick="event.stopPropagation();">Financial Services / Insurance</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-flight_attendant')">
+                  <input type="checkbox" id="role-flight_attendant" value="flight_attendant" data-label="Flight Attendant" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-flight_attendant" onclick="event.stopPropagation();">Flight Attendant</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-flight_school')">
+                  <input type="checkbox" id="role-flight_school" value="flight_school" data-label="Flight School / Academy" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-flight_school" onclick="event.stopPropagation();">Flight School / Academy</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-mro')">
+                  <input type="checkbox" id="role-mro" value="mro" data-label="Part 145 MRO Repair Station" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-mro" onclick="event.stopPropagation();">Part 145 MRO Repair Station</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-supplier')">
+                  <input type="checkbox" id="role-supplier" value="supplier" data-label="Parts Distributor / Supplier" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-supplier" onclick="event.stopPropagation();">Parts Distributor / Supplier</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-pilot_commercial')">
+                  <input type="checkbox" id="role-pilot_commercial" value="pilot_commercial" data-label="Pilot - Commercial / ATP" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-pilot_commercial" onclick="event.stopPropagation();">Pilot - Commercial / ATP</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-pilot_private')">
+                  <input type="checkbox" id="role-pilot_private" value="pilot_private" data-label="Pilot - Private / General Aviation" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-pilot_private" onclick="event.stopPropagation();">Pilot - Private / General Aviation</label>
+                </div>
+                <div class="multiselect-option" onclick="toggleOption('role-other')">
+                  <input type="checkbox" id="role-other" value="other" data-label="Other" onclick="event.stopPropagation(); updateSelectedRoles();" />
+                  <label for="role-other" onclick="event.stopPropagation();">Other</label>
+                </div>
+              </div>
+            </div>
+            <input type="hidden" id="classification" required name="classification" />
+          </div>
+
+          <!-- Custom Role Input (Conditionally visible) -->
+          <div class="form-group" id="custom-role-container" style="display: none;">
+            <label class="form-label" for="custom-role">Role/Classification</label>
+            <input class="form-input" type="text" id="custom-role" placeholder="e.g. Avionics Engineer / Consultant" />
+          </div>
+
+          <!-- Dynamic Personal Domain Warning -->
+          <div class="alert-box" id="domain-warning">
+            ⚠️ <strong>Personal Domain Detected:</strong> Email addresses from personal domains (Gmail, iCloud, etc.) bypass auto-verification and are routed to our secure manual review queue (<code>#onboarding-triage</code>).
+          </div>
+
+          <!-- Message Field -->
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea class="form-input" id="message" rows="4" placeholder="Please let us know how we can help you." style="resize: vertical; font-family: var(--font-body);"></textarea>
+          </div>
+
+          <button class="btn-submit" type="submit">Submit</button>
+        </form>
+      </div>
+
+      <!-- Success Container -->
+      <div class="success-container" id="success-container">
+        <svg class="success-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <div class="success-subtitle">onboarding dossier dispatched</div>
+        <h2 class="form-title" style="margin-bottom: 1rem;">Dossier Ingested</h2>
+        
+        <p class="success-desc">
+          Your credentials have been logged. The onboarding agent has dispatched an interactive verification card to our internal triage workspace.
+        </p>
+
+        <div class="console-box" id="console-logs">
+          <!-- Populated by JS -->
+        </div>
+
+        <a href="#" id="mailto-cta" class="btn-submit" style="display: none; text-decoration: none; margin-top: 2rem; margin-bottom: 1rem; text-align: center;">Compose Email Manually</a>
+        <a href="index.html" class="btn-secondary" style="margin-top: 2rem;">Return to Homepage</a>
+      </div>
+
+    </div>
+  </main>
+
+  
+
+  <script is:inline>
+    // Personal domains list to check for fallbacks
+    const personalDomains = ['gmail.com', 'icloud.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'aol.com', 'mail.com'];
+
+    function checkEmailDomain(emailVal) {
+      if (!emailVal || !emailVal.includes('@')) return;
+      
+      const parts = emailVal.toLowerCase().split('@');
+      const domain = parts[parts.length - 1].trim();
+      const warningBox = document.getElementById('domain-warning');
+      
+      if (personalDomains.includes(domain)) {
+        warningBox.style.display = 'block';
+      } else {
+        warningBox.style.display = 'none';
+      }
+    }
+
+    function toggleDropdown(e) {
+      if (e) e.stopPropagation();
+      const options = document.getElementById('multiselect-options');
+      const trigger = document.getElementById('multiselect-trigger');
+      options.classList.toggle('active');
+      trigger.classList.toggle('active');
+    }
+
+    function toggleOption(id) {
+      const cb = document.getElementById(id);
+      if (cb) {
+        cb.checked = !cb.checked;
+        updateSelectedRoles();
+      }
+    }
+
+    function updateSelectedRoles() {
+      const checkboxes = document.querySelectorAll('.multiselect-option input[type="checkbox"]');
+      const selectedLabels = [];
+      const selectedValues = [];
+      let isOtherSelected = false;
+
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          selectedLabels.push(cb.getAttribute('data-label'));
+          selectedValues.push(cb.value);
+          if (cb.value === 'other') {
+            isOtherSelected = true;
+          }
+        }
+      });
+
+      const label = document.getElementById('multiselect-label');
+      const trigger = document.getElementById('multiselect-trigger');
+      
+      if (selectedLabels.length === 0) {
+        label.innerText = 'Select your aviation role(s)';
+        label.classList.remove('has-value');
+      } else {
+        label.innerText = selectedLabels.join(', ');
+        label.classList.add('has-value');
+        if (trigger) trigger.style.borderColor = '';
+      }
+
+      const hiddenInput = document.getElementById('classification');
+      hiddenInput.value = selectedValues.join(',');
+
+      // Toggle custom role container
+      const customRoleContainer = document.getElementById('custom-role-container');
+      const customRoleInput = document.getElementById('custom-role');
+      if (isOtherSelected) {
+        customRoleContainer.style.display = 'flex';
+        customRoleInput.required = true;
+      } else {
+        customRoleContainer.style.display = 'none';
+        customRoleInput.required = false;
+      }
+
+      // Update email check if active
+      const emailInput = document.getElementById('email').value;
+      if (emailInput && emailInput.includes('@')) {
+        checkEmailDomain(emailInput);
+      }
+    }
+
+    // Dismiss dropdown on outside clicks
+    document.addEventListener('click', function(event) {
+      const dropdown = document.getElementById('multiselect-dropdown');
+      const options = document.getElementById('multiselect-options');
+      const trigger = document.getElementById('multiselect-trigger');
+      if (dropdown && !dropdown.contains(event.target)) {
+        options.classList.remove('active');
+        trigger.classList.remove('active');
+      }
+    });
+
+    async function handleJoinSubmit(e) {
+      e.preventDefault();
+      
+      const role = document.getElementById('classification').value;
+      if (!role) {
+        const trigger = document.getElementById('multiselect-trigger');
+        if (trigger) {
+          trigger.style.borderColor = 'var(--alert)';
+          trigger.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+
+      const firstName = document.getElementById('first-name').value;
+      const lastName = document.getElementById('last-name').value;
+      const name = `${firstName} ${lastName}`;
+      const email = document.getElementById('email').value;
+      const orgName = document.getElementById('org-name').value;
+      const customRole = document.getElementById('custom-role').value;
+      const message = document.getElementById('message').value;
+
+      const emailDomain = email.split('@')[1].toLowerCase();
+      const isPersonal = personalDomains.includes(emailDomain);
+      
+      let roleDisplay = role;
+      if (role.split(',').includes('other')) {
+        const rolesArr = role.split(',').filter(r => r !== 'other');
+        if (customRole) {
+          rolesArr.push(customRole);
+        }
+        roleDisplay = rolesArr.join(', ');
+      }
+
+      // Determine API endpoint and environment based on hostname
+      const host = window.location.hostname;
+      let environment = 'production';
+      let apiEndpoint = 'https://api.birdverse.ai/api/onboarding/join';
+      
+      if (host === 'localhost' || host === '127.0.0.1') {
+        environment = 'dev';
+        apiEndpoint = 'http://localhost:3001/api/onboarding/join';
+      } else if (host.includes('test') || host.includes('staging') || host.includes('dev')) {
+        environment = 'test';
+        apiEndpoint = 'https://api.birdverse.ai/api/onboarding/join';
+      }
+
+      // Hide form
+      document.getElementById('join-form-container').style.display = 'none';
+      
+      // Show success container
+      const successBox = document.getElementById('success-container');
+      successBox.style.display = 'block';
+
+      const consoleBox = document.getElementById('console-logs');
+      consoleBox.innerHTML = '';
+
+      const addLog = (log) => {
+        const div = document.createElement('div');
+        div.className = 'console-line';
+        div.innerHTML = `<span class="console-label">&gt;</span> ${log}`;
+        consoleBox.appendChild(div);
+        consoleBox.scrollTop = consoleBox.scrollHeight;
+      };
+
+      addLog(`[INGEST] Initializing profile row for user: ${name}`);
+      addLog(`[INGEST] Email: ${email} // Domain: ${emailDomain}`);
+      addLog(`[INGEST] Organization: ${orgName}`);
+      addLog(`[API] Dispatching secure POST request to API (${environment} mode)...`);
+
+      // Construct mailto redirect url helper
+      const getMailtoUrl = (isSuccess) => {
+        const subject = `${isSuccess ? "" : "(API Fallback) "}Birdverse Waitlist Request: ${name}`;
+        const body = `Name: ${name}\nEmail: ${email}\nOrganization: ${orgName}\nRole(s): ${roleDisplay}\nMessage: ${message || 'N/A'}\nEnvironment: ${environment}\n\n${isSuccess ? "" : "Note: API submission failed. Please process manually.\n\n"}Sent via Join Waitlist Form.`;
+        return `mailto:fly@birdverse.ai?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      };
+
+      try {
+        const response = await fetch(apiEndpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            orgName,
+            environment,
+            roleClassification: roleDisplay,
+            message
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || 'API request failed');
+        }
+
+        addLog(`[API] <span class="console-green">SUCCESS: Onboarding request accepted. Request ID: ${data.requestId || 'N/A'}</span>`);
+        addLog(`[RLS-AUTH] Creating secure record mapping to ${roleDisplay.toUpperCase()} entities`);
+        addLog(`[AUDIT] Committing WORM entry: organization.join_request`);
+        
+        if (isPersonal) {
+          addLog(`[TRIAGE-ROUTE] fallback detected: Personal domain signup (Gmail/iCloud)<br><span class="console-label">ACTION:</span> Dispatched dossier to internal manual review queue <span class="console-green">#onboarding-triage</span>`);
+        } else {
+          addLog(`[TRIAGE-ROUTE] corporate domain detected: "${emailDomain}"<br><span class="console-label">ACTION:</span> Matching against trusted-domain indices...<br><span class="console-green">SUCCESS:</span> Auto-routed to waitlist queue for Administrator approval`);
+        }
+        
+        addLog(`[SECURITY] Profile credentials encrypted in Supabase Storage (Supabase KMS)`);
+        addLog(`[AUDIT-LOG] Computed SHA-256 block hash for WORM append-only ledger`);
+        addLog(`[ROUTE] Outbound email dispatched via Resend to fly@birdverse.ai`);
+        addLog(`[STATUS] <span class="console-green">SUCCESS: dossier queued for manual sign-off (onboarding decision SLA &lt; 48 hours)</span>`);
+
+      } catch (err) {
+        addLog(`[API] <span class="text-danger" style="color: var(--alert);">ERROR: Failed to submit waitlist request to backend API.</span>`);
+        addLog(`[API] Details: ${err.message}`);
+        addLog(`[API] <span class="console-label">FALLBACK:</span> Initiating manual email dispatch fallback...`);
+
+        // Setup manual fallback button
+        const mailtoUrl = getMailtoUrl(false);
+        const mailtoBtn = document.getElementById('mailto-cta');
+        if (mailtoBtn) {
+          mailtoBtn.setAttribute('href', mailtoUrl);
+          mailtoBtn.style.display = 'block';
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

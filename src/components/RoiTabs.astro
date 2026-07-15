@@ -1,0 +1,129 @@
+---
+interface Props {
+  pretitle?: string;
+  title?: string;
+  desc?: string;
+}
+
+const {
+  pretitle = "Measurable ROI",
+  title = "Tailored Value Propositions",
+  desc = "Delivering operational gains and financial assurances across all core aviation stakeholders."
+} = Astro.props;
+---
+
+<section class="roi-pitches" id="roi">
+  <div class="roi-container">
+    <div class="section-header">
+      <span class="section-pretitle">{pretitle}</span>
+      <h2 class="section-title">{title}</h2>
+      <p class="section-desc">{desc}</p>
+    </div>
+
+    <div class="roi-tabs">
+      <button class="roi-tab-btn active" data-tab="fleet">Aircraft Owners</button>
+      <button class="roi-tab-btn" data-tab="mro">Part 145 MROs</button>
+      <button class="roi-tab-btn" data-tab="oem">OEMs & Parts Suppliers</button>
+    </div>
+
+    <!-- Tab 1: For Fleet Operators -->
+    <div class="roi-content-box" id="roi-content-fleet">
+      <div>
+        <div>
+          <h4 class="roi-column-title">Aircraft Owners</h4>
+          <div style="font-family: var(--font-secondary); font-size: 1.15rem; color: var(--brand-orange); font-weight: 600; margin-bottom: 2rem;">
+            Maximize Availability. Protect Asset Value.
+          </div>
+          <ul class="roi-list">
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Minimize AOG Delays:</strong> Eliminate administrative bloat and manual paperwork that keep aircraft grounded.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Global MRO Network:</strong> Launch competitive, compliant RFQs to a vetted network of Part 145 repair stations in seconds.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Escrow Shield:</strong> Secure your project funding in escrow. Payouts are only released once milestones are verified by your digital sign-off.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: For MRO Facilities -->
+    <div class="roi-content-box" id="roi-content-mro" style="display: none;">
+      <div>
+        <div>
+          <h4 class="roi-column-title">Part 145 MROs</h4>
+          <div style="font-family: var(--font-secondary); font-size: 1.15rem; color: var(--brand-orange); font-weight: 600; margin-bottom: 2rem;">
+            Accelerate Cash Flow. Eliminate Bad Debt.
+          </div>
+          <ul class="roi-list">
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Data-Rich RFQs:</strong> Receive perfectly formatted service requests that eliminate guesswork, phone tag, and estimates.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Guaranteed Funds:</strong> Work with confidence knowing customer funds are fully secured in escrow before you turn a wrench.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Gain New Customer:</strong> Build reputational trust in Birdverse and grow your business.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: For OEMs & Suppliers -->
+    <div class="roi-content-box" id="roi-content-oem" style="display: none;">
+      <div>
+        <div>
+          <h4 class="roi-column-title">OEMs & Parts Suppliers</h4>
+          <div style="font-family: var(--font-secondary); font-size: 1.15rem; color: var(--brand-orange); font-weight: 600; margin-bottom: 2rem;">
+            Direct-to-Tail Distribution.
+          </div>
+          <ul class="roi-list">
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Direct SB Broadcasts:</strong> Push critical Service Bulletins directly to the operators and tails affected by them.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Workflow Integration:</strong> Streamline your parts supply chain by integrating directly into active maintenance workflows.</span>
+            </li>
+            <li class="roi-item">
+              <span class="roi-marker">✓</span>
+              <span class="roi-text"><strong>Guaranteed Funds:</strong> Ship parts with confidence knowing customer funds can be fully secured in escrow prior to shipment.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  const buttons = document.querySelectorAll('.roi-tab-btn');
+  const contentBoxes = document.querySelectorAll('.roi-content-box');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      buttons.forEach(btn => btn.classList.remove('active'));
+      button.classList.add('active');
+
+      const targetTab = button.getAttribute('data-tab');
+      contentBoxes.forEach(box => {
+        if (box.id === `roi-content-${targetTab}`) {
+          (box as HTMLElement).style.display = 'grid';
+        } else {
+          (box as HTMLElement).style.display = 'none';
+        }
+      });
+    });
+  });
+</script>

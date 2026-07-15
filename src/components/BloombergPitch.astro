@@ -1,0 +1,69 @@
+---
+interface Card {
+  badge: string;
+  title: string;
+  desc: string;
+}
+
+interface Props {
+  pretitle?: string;
+  title?: string;
+  desc?: string;
+  cards?: Card[];
+}
+
+const {
+  pretitle = "The Core Problem",
+  title = "Aviation moves at Mach 0.8. Your administrative back-office shouldn't move at a snail's pace.",
+  desc = "Today's aviation ecosystem is crippled by fragmented data and legacy silos. Every maintenance event, parts procurement, and compliance check requires a dozen emails, unverified PDFs, phone tag, and financial risk.",
+  cards = [
+    {
+      badge: "The Data Tax",
+      title: "Isolated Databases",
+      desc: "Aircraft logs, Airworthiness Directives (ADs), and Service Bulletins (SBs) live in isolated databases."
+    },
+    {
+      badge: "The Communication Void",
+      title: "Fragmented Threads",
+      desc: "Crucial maintenance updates get buried in personal email threads and WhatsApp groups."
+    },
+    {
+      badge: "The Capital Freeze",
+      title: "Slowing Cash Flow",
+      desc: "Legacy wire transfers and high-fee credit card processors drag out turn-around times (TAT) and stall cash flow."
+    }
+  ]
+} = Astro.props;
+---
+
+<style>
+  .narrative-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+  @media (max-width: 968px) {
+    .narrative-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<section class="narrative" id="narrative">
+  <div class="section-header">
+    <span class="section-pretitle">{pretitle}</span>
+    <h2 class="section-title">{title}</h2>
+    <p class="section-desc">{desc}</p>
+  </div>
+  
+  <div class="narrative-grid">
+    {cards.map(card => (
+      <div class="narrative-card">
+        <div class="narrative-badge">{card.badge}</div>
+        <h3 class="narrative-title">{card.title}</h3>
+        <p class="narrative-desc">{card.desc}</p>
+      </div>
+    ))}
+  </div>
+</section>
+

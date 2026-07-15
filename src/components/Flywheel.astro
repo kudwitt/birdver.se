@@ -1,0 +1,100 @@
+---
+interface Props {
+  pretitle?: string;
+  title?: string;
+  desc?: string;
+}
+
+const {
+  pretitle = "Ecosystem Growth",
+  title = "The Birdverse Product Flywheel",
+  desc = "Creating rapid ecosystem loop dynamics by aligning incentives between fleet managers, parts suppliers, and MRO service shops."
+} = Astro.props;
+---
+
+<section class="flywheel" id="flywheel">
+  <div class="section-header">
+    <span class="section-pretitle">{pretitle}</span>
+    <h2 class="section-title">{title}</h2>
+    <p class="section-desc">{desc}</p>
+  </div>
+  
+  <div class="flywheel-split">
+    <div class="flywheel-steps">
+      <div class="flywheel-step active" data-step="1">
+        <div class="flywheel-num">1</div>
+        <span class="flywheel-step-title">Real-Time Fleet Value & Compliance</span>
+      </div>
+      <div class="flywheel-step" data-step="2">
+        <div class="flywheel-num">2</div>
+        <span class="flywheel-step-title">One-Click Competitive RFQs</span>
+      </div>
+      <div class="flywheel-step" data-step="3">
+        <div class="flywheel-num">3</div>
+        <span class="flywheel-step-title">Streamlined Bidding & Handoffs</span>
+      </div>
+      <div class="flywheel-step" data-step="4">
+        <div class="flywheel-num">4</div>
+        <span class="flywheel-step-title">Secure Digital Escrow & Sign-off</span>
+      </div>
+      <div class="flywheel-step" data-step="5">
+        <div class="flywheel-num">5</div>
+        <span class="flywheel-step-title">Transparent Reputation Records</span>
+      </div>
+    </div>
+    
+    <div class="flywheel-display">
+      <!-- Flywheel loop svg icon -->
+      <svg class="flywheel-display-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"/>
+        <path d="M12 6v6h6v-2h-4V6z"/>
+      </svg>
+      <h3 class="flywheel-display-title" id="fw-title">Real-Time Fleet Value & Compliance</h3>
+      <p class="flywheel-display-desc" id="fw-desc">
+        Aircraft owners and operators track real-time asset valuations, active flight cycles, and compliance warnings automatically.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const flywheelData: Record<number, { title: string; desc: string }> = {
+    1: {
+      title: "Real-Time Fleet Value & Compliance",
+      desc: "Aircraft owners and operators track real-time asset valuations, active flight cycles, and compliance warnings automatically."
+    },
+    2: {
+      title: "One-Click Competitive RFQs",
+      desc: "Draft scope instantly and request bids for inspections, parts, and repairs, matching qualified service facilities in seconds."
+    },
+    3: {
+      title: "Streamlined Bidding & Handoffs",
+      desc: "FAA Part 145 repair stations receive structured bids, eliminate phone tag, and communicate details in real-time."
+    },
+    4: {
+      title: "Secure Digital Escrow & Sign-off",
+      desc: "Protect funds with FedNow-based escrow vaults. Payments are released instantly upon verified digital signature sign-off."
+    },
+    5: {
+      title: "Transparent Reputation Records",
+      desc: "Birdverse objective reputation scores create a trusted, searchable directory of providers you can rely on."
+    }
+  };
+
+  const steps = document.querySelectorAll('.flywheel-step');
+  const fwTitle = document.getElementById('fw-title');
+  const fwDesc = document.getElementById('fw-desc');
+
+  steps.forEach(step => {
+    step.addEventListener('click', () => {
+      steps.forEach(btn => btn.classList.remove('active'));
+      step.classList.add('active');
+      const stepNumStr = step.getAttribute('data-step');
+      if (stepNumStr && fwTitle && fwDesc) {
+        const stepNum = parseInt(stepNumStr, 10);
+        fwTitle.innerText = flywheelData[stepNum].title;
+        fwDesc.innerText = flywheelData[stepNum].desc;
+      }
+    });
+  });
+</script>

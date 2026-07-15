@@ -1,0 +1,164 @@
+---
+interface Props {
+  pretitle?: string;
+  title?: string;
+  desc?: string;
+}
+
+const {
+  pretitle = "The Solution",
+  title = "One Terminal. Infinite Operational Velocity.",
+  desc = "Birdverse bridges the gap between dispatch, the hangar floor, and global supply chains by combining three core layers into a single, seamless dashboard."
+} = Astro.props;
+---
+
+<style>
+  .tech-readout {
+    background: rgba(4, 10, 27, 0.4);
+    border: 1px solid var(--border-color, rgba(224, 242, 254, 0.08));
+    border-radius: 8px;
+    padding: 1.25rem;
+    font-family: var(--font-technical, 'JetBrains Mono', monospace);
+    font-size: 0.8rem;
+    margin-top: 1.5rem;
+  }
+  .tech-readout-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px dashed rgba(224, 242, 254, 0.05);
+  }
+  .tech-readout-row:last-child {
+    border-bottom: none;
+  }
+  .tech-label {
+    color: var(--gray-velocity, #c1cbd4);
+  }
+  .tech-value {
+    font-weight: 700;
+  }
+  .tech-value.green {
+    color: var(--success, hsl(145, 80%, 45%));
+    text-shadow: 0 0 6px rgba(16, 185, 129, 0.2);
+  }
+</style>
+
+<section class="solutions" id="solutions">
+  <div class="solutions-container">
+    
+    <div class="section-header">
+      <span class="section-pretitle">{pretitle}</span>
+      <h2 class="section-title">{title}</h2>
+      <p class="section-desc">{desc}</p>
+    </div>
+
+    <!-- Pillar 1: Connected Data & AI -->
+    <div class="solution-block">
+      <div>
+        <span class="solution-number">PILLAR 01 // CONNECTED DATA & AI</span>
+        <h3 class="solution-title">Wingman AI & Fleet Valuation</h3>
+        <p class="solution-desc">
+          Instantly cross-reference flight logs with active Airworthiness Directives (ADs), Service Bulletins (SBs), and compliance mandates. Track the real-time market value of your assets based on live tail data, flight hours, and maintenance history.
+        </p>
+        <div class="tech-readout" style="max-width: 450px;">
+          <div class="tech-readout-row"><span class="tech-label">Fleet Valuation</span><span class="tech-value green">ACTIVE / REAL-TIME</span></div>
+        </div>
+      </div>
+      
+      <div class="mock-viewport">
+        <div class="mock-header-bar">
+          <div class="mock-dot active"></div><div class="mock-dot"></div><div class="mock-dot"></div>
+          <span class="mock-window-title">WINGMAN CO-PILOT TERMINAL</span>
+        </div>
+        <div class="mock-query-screen">
+          <div class="query-input">&gt; Wingman: Check AD compliance on Gulfstream G650ER tail N702WJ</div>
+          <div class="query-response">
+            [SYSTEM ANALYSIS] Cross-referencing logs against FAA database...<br>
+            - Detected AD 2026-04 Pratt & Whitney PW307A fuel manifold warning.<br>
+            - Action Required: Inspection within next 50 cycles.<br>
+            <br>
+            [VALUATION INDEX] Real-time market metrics synced:<br>
+            - N552RK (Citation CJ3+): 4,847 hrs | $7.2M<br>
+            - N888BV (Challenger 350): 2,156 hrs | $18.5M<br>
+            - N650GX (Gulfstream G650): 6,421 hrs | $32.5M<br>
+            - N6X01F (Falcon 6X): 892 hrs | $47.0M
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 2: In-Context Messenger -->
+    <div class="solution-block reverse">
+      <div class="mock-viewport">
+        <div class="mock-header-bar">
+          <div class="mock-dot active"></div><div class="mock-dot"></div><div class="mock-dot"></div>
+          <span class="mock-window-title">MESSENGER TERMINAL (N702WJ)</span>
+        </div>
+        <div class="mock-chat-area">
+          <div class="chat-bubble incoming">
+            <div class="chat-meta">WEST STAR AERO // 09:14 UTC</div>
+            <div class="chat-text">Fuel manifold inspection report is uploaded. Seal replacement looks clean. Confirm sign-off?</div>
+          </div>
+          <div class="chat-bubble outgoing">
+            <div class="chat-meta">OPERATOR DISPATCH // 09:15 UTC</div>
+            <div class="chat-text">Confirmed. E-signing work order now. Escrow release will trigger automatically on sign-off.</div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <span class="solution-number">PILLAR 02 // IN-CONTEXT MESSENGER</span>
+        <h3 class="solution-title">The End of "Quote Roulette"</h3>
+        <p class="solution-desc">
+          Communicate directly inside active RFQs, work orders, and quotes. Every message, change order, and sign-off is cryptographically tied to the tail number and maintenance record, leaving a verified audit trail.
+        </p>
+        <div class="tech-readout" style="max-width: 450px;">
+          <div class="tech-readout-row"><span class="tech-label">Security Protocol</span><span class="tech-value green">AES-256 Encrypted</span></div>
+          <div class="tech-readout-row"><span class="tech-label">Audit Trail Ledger</span><span class="tech-value green">SECURED (WORM)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pillar 3: One-Click RFQs & Streamlined RFQ-to-Cash Process -->
+    <div class="solution-block">
+      <div>
+        <span class="solution-number">PILLAR 03 // ONE-CLICK RFQS & COGNITIVE COMMERCE</span>
+        <h3 class="solution-title">One-Click RFQs & Streamlined RFQ-to-Cash Process</h3>
+        <p class="solution-desc">
+          Generate structured, competitive RFQs instantly using Wingman AI matching tail logs and maintenance guidelines. Streamline the transition from bidding to invoice payment for repair stations and parts suppliers with integrated e-signatures and virtual FedNow escrow milestones to protect both sides.
+        </p>
+        <div class="tech-readout" style="max-width: 450px;">
+          <div class="tech-readout-row"><span class="tech-label">E-Signature Verification</span><span class="tech-value green">FAA-COMPLIANT</span></div>
+          <div class="tech-readout-row"><span class="tech-label">Escrow Milestones</span><span class="tech-value green">AUTOMATED</span></div>
+        </div>
+      </div>
+      
+      <div class="mock-viewport">
+        <div class="mock-header-bar">
+          <div class="mock-dot active"></div><div class="mock-dot"></div><div class="mock-dot"></div>
+          <span class="mock-window-title">WINGMAN AI RFQ GENERATOR (BDN0001048)</span>
+        </div>
+        <div class="mock-query-screen" style="font-family: var(--font-technical); font-size: 0.8rem; line-height: 1.5; padding: 1.5rem; display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(224, 242, 254, 0.05); padding-bottom: 4px;">
+            <span style="color: var(--gray-velocity);">RFQ Number</span>
+            <span style="font-weight: 700; color: var(--brand-orange);">BDN0001048</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(224, 242, 254, 0.05); padding-bottom: 4px;">
+            <span style="color: var(--gray-velocity);">Aircraft</span>
+            <span style="font-weight: 700;">Gulfstream G650 (N650GX)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(224, 242, 254, 0.05); padding-bottom: 4px;">
+            <span style="color: var(--gray-velocity);">Scope</span>
+            <span style="font-weight: 700;">Aileron Actuator Replacement</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed rgba(224, 242, 254, 0.05); padding-bottom: 4px;">
+            <span style="color: var(--gray-velocity);">MROs Invited</span>
+            <span style="font-weight: 700;">Duncan Aviation, West Star Aviation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
