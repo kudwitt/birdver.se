@@ -5,6 +5,13 @@ const { frontmatter = {} } = Astro.props;
 const isOriginalPage = Astro.url.pathname.includes('original');
 const isComingSoon = !isOriginalPage && (Astro.url.pathname === '/' || Astro.url.pathname.endsWith('/index.html') || Astro.url.pathname.endsWith('/index') || Astro.url.pathname === '');
 const homeUrl = isOriginalPage ? 'original.html' : 'index.html';
+const rawPath = Astro.url.pathname.replace(/\/index(\.html)?$/, '/');
+const canonicalPath = rawPath === '/' || rawPath === ''
+  ? '/'
+  : rawPath.endsWith('.html')
+    ? rawPath
+    : `${rawPath.replace(/\/$/, '')}.html`;
+const canonicalUrl = `https://birdverse.ai${canonicalPath}`;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +19,15 @@ const homeUrl = isOriginalPage ? 'original.html' : 'index.html';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{frontmatter.title} — {frontmatter.tagline}</title>
+  <link rel="canonical" href={canonicalUrl}>
+  <meta property="og:url" content={canonicalUrl}>
+  <meta property="og:site_name" content="Birdverse">
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Birdverse",
+    "url": "https://birdverse.ai/"
+  })} />
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1664,7 +1680,7 @@ const homeUrl = isOriginalPage ? 'original.html' : 'index.html';
           </svg>
           <span class="nav-logo-text">{frontmatter.title || "Birdverse"}</span>
         </a>
-        <div style="font-size: 0.8rem; color: var(--gray-velocity);">{frontmatter.tagline || "The Terminal for Global Aviation."} // birdver.se</div>
+        <div style="font-size: 0.8rem; color: var(--gray-velocity);">{frontmatter.tagline || "The Terminal for Global Aviation."} // birdverse.ai</div>
       </div>
       
       <div class="footer-navigation">
