@@ -1680,7 +1680,7 @@ const canonicalUrl = `https://birdverse.ai${canonicalPath}`;
           </svg>
           <span class="nav-logo-text">{frontmatter.title || "Birdverse"}</span>
         </a>
-        <div style="font-size: 0.8rem; color: var(--gray-velocity);">{frontmatter.tagline || "The Terminal for Global Aviation."} // birdverse.ai</div>
+        <div style="font-size: 0.8rem; color: var(--gray-velocity);">{(frontmatter.tagline || "The Terminal for Global Aviation").replace(/\.$/, '')} // birdverse.ai</div>
       </div>
       
       <div class="footer-navigation">
